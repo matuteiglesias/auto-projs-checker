@@ -6,49 +6,6 @@ import hashlib
 import os
 from typing import Iterable, Optional, Sequence, Tuple, Dict, Any
 
-
-DEFAULT_EXCLUDE_DIRS = {
-    ".git",
-    ".hg",
-    ".svn",
-    ".venv",
-    "venv",
-    "__pycache__",
-    "node_modules",
-    "dist",
-    "build",
-    ".cache",
-    ".mypy_cache",
-    ".pytest_cache",
-}
-
-
-def now_iso() -> str:
-    return datetime.datetime.now(datetime.timezone.utc).isoformat()
-
-
-def snippet_sha256_of_file(path: str, max_read: int = 4000) -> Optional[str]:
-    try:
-        with open(path, "rb") as f:
-            b = f.read(max_read)
-        return hashlib.sha256(b).hexdigest()
-    except Exception:
-        return None
-
-
-def safe_read_text_prefix(path: str, max_chars: int = 40000) -> str:
-    """Best-effort read a text prefix. Never raises."""
-    try:
-        with open(path, "r", encoding="utf-8", errors="ignore") as fh:
-            return fh.read(max_chars)
-    except Exception:
-        try:
-            with open(path, "rb") as fh:
-                return fh.read(min(max_chars, 40000)).decode("utf-8", errors="ignore")
-        except Exception:
-            return ""
-
-
 def file_stat(path: str) -> Tuple[int, float]:
     """Return (size_bytes, mtime_epoch). Never raises; returns (0,0) on failure."""
     try:

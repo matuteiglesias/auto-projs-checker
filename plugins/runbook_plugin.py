@@ -138,3 +138,30 @@ class RunbookPlugin(BasePlugin):
                 "elapsed_ms": int((time.time() - t0) * 1000),
             },
         )
+
+
+
+# TODO
+
+
+# runbook_plugin.py
+
+# What it covers well:
+
+# Existence and some minimal structure for the runbook.
+
+# Sharp corners to fix:
+
+# It should validate that the runbook mentions your current reality:
+
+# compiler module exists
+
+# systemd timer exists
+
+# “how to run live-cycle” exists
+
+# Add a simple “runbook freshness” rule:
+
+# if runbook last modified older than X days, WARN
+
+# or require a “Last updated:” line inside the file and check it

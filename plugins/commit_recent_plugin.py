@@ -204,7 +204,7 @@ class CommitRecentPlugin(BasePlugin):
             # "license": bool(license_f),
             "gitignore": bool(gitignore),
             # "pyproject": bool(pyproject),
-            "requirements": bool(requirements),
+            # "requirements": bool(requirements),
             "runbook": bool(runbook_present),
         }
         facts["hygiene"] = hygiene
@@ -249,9 +249,9 @@ class CommitRecentPlugin(BasePlugin):
             return done("WARN", "warning", "DIRTY_WORKTREE",
                         "repo has uncommitted changes", evidence=evidence, meta=facts)
 
-        if missing:
-            return done("WARN", "warning", "REPO_HYGIENE_GAPS",
-                        "repo is active but missing basic hygiene files", evidence=evidence, meta=facts)
+        # if missing:
+        #     return done("WARN", "warning", "REPO_HYGIENE_GAPS",
+        #                 "repo is active but missing basic hygiene files", evidence=evidence, meta=facts)
 
         return done("PASS", "ok", "RECENT_OK", "repo looks healthy (recent commit, clean worktree)", evidence=evidence, meta=facts)
 
@@ -259,3 +259,25 @@ class CommitRecentPlugin(BasePlugin):
 PLUGIN = CommitRecentPlugin()
 def get_plugin():
     return PLUGIN
+
+
+
+# TODO
+
+# commit_recent_plugin.py
+
+# What it covers well:
+
+# Checks repo has recent commit and/or clean worktree.
+
+# Sharp corners to fix:
+
+# Config should be per project, not implicitly global. Add optional fields in the sheet like:
+
+# stale_days_warn, stale_days_fail, allow_dirty
+
+# Treat “dirty worktree” as WARN by default, but allow FAIL for certain repos (infra repos).
+
+# Add an “upstream divergence” check (cheap signal):
+
+# git rev-list --count --left-right @{upstream}...HEAD
