@@ -1,0 +1,5 @@
+repo_path	workdir	runbook_path	output_paths	smoke_cmd	notes
+/home/matias/repos/thesis	/home/matias/repos/thesis	/home/matias/repos/thesis/notes/runbook.md	/home/matias/repos/thesis/artifacts	make smoke	
+/home/matias/repos/indice-pobreza-UBA	/home/matias/repos/indice-pobreza-UBA	/home/matias/repos/indice-pobreza-UBA/notes/runbook.md	/home/matias/repos/indice-pobreza-UBA/artifacts	make smoke	
+/home/matias/Documents/link/Pobreza	/home/matias/Documents/link/Pobreza	/home/matias/Documents/link/Pobreza/notes/runbook.md	/home/matias/Documents/link/Pobreza/artifacts	make smoke	
+/home/matias/repos/atlas-site	/home/matias/repos/atlas-site	/home/matias/repos/atlas-site/notes/runbook.md	/home/matias/repos/atlas-site/artifacts	make smoke	
