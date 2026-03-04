@@ -1,0 +1,12 @@
+[Unit]
+Description=Auto Projects Checker (frontier + compiler + publish)
+After=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/matias/Documents/auto-projs-checker
+Environment=PYTHONUNBUFFERED=1
+Environment=PATH=/home/matias/Documents/auto-projs-checker/new_env/bin:/usr/bin:/bin
+Environment=SHEET_ID=1mImijqIwcbBqcO05xKzPWMITo-53ypjd1BEGicTp3jE
+Environment=SA=/home/matias/Documents/auto-projs-checker/private/service_account_file.json
+ExecStart=/usr/bin/make -C /home/matias/Documents/auto-projs-checker live-cycle
