@@ -1,2 +1,6 @@
-gspread==5.7.2
+gspread==6.2.0
 google-auth==2.21.0
+google-auth-oauthlib
+requests-oauthlib
+oauthlib
+pandas
