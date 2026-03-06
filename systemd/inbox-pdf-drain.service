@@ -1,0 +1,11 @@
+[Unit]
+Description=Drain inbox PDFs and process bills/statements
+After=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/Documents/auto-projs-checker
+Environment=PYTHONUNBUFFERED=1
+ExecStart=%h/Documents/auto-projs-checker/scripts/inbox_drain_entrypoint.sh %h/Documents/auto-projs-checker/private/inbox_runtime.env
+StandardOutput=journal
+StandardError=journal

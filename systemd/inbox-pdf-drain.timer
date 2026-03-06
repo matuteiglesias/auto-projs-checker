@@ -1,0 +1,10 @@
+[Unit]
+Description=Run inbox PDF drain every 5 minutes
+
+[Timer]
+OnCalendar=*:0/5
+Persistent=true
+Unit=inbox-pdf-drain.service
+
+[Install]
+WantedBy=timers.target

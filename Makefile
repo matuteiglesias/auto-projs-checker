@@ -16,7 +16,14 @@ OUT_JSONL        ?= $(OUT_COMPILER_DIR)/prepared_blocks.jsonl
 PY ?= python3
 PY_ENV = PYTHONNOUSERSITE=1 $(PY)
 
-.PHONY: help smoke run run_all live-cycle frontier compile-queue publish-queue check-env dirs clean-queue
+.PHONY: help smoke run run_all live-cycle frontier compile-queue publish-queue check-env dirs clean-queue inbox-dirs drain-inbox
+
+INBOX_DIR ?= data/inbox
+PROCESSED_DIR ?= data/processed
+FAILED_DIR ?= data/failed
+ARCHIVE_DIR ?= data/archive
+INBOX_LOCK ?= data/.inbox_drain.lock
+PDF_PROCESSOR_CMD ?=
 
 help:
 	@echo "Project: $(PROJECT)"
@@ -33,10 +40,13 @@ help:
 	@echo ""
 	@echo "Utilities:"
 	@echo "  make clean-queue   remove today's compiler output dir"
+	@echo "  make drain-inbox   process PDF files from inbox with claim/lock"
+	@echo "  make inbox-dirs    create inbox/processed/failed/archive directories"
 	@echo ""
 	@echo "Env vars:"
 	@echo "  SHEET_ID=<google sheet id>   SA=<path to service_account_file.json>"
 	@echo "  DATE=YYYY-MM-DD (optional override)"
+	@echo "  PDF_PROCESSOR_CMD='<command>' (required by make drain-inbox)"
 	@echo ""
 
 # Offline bounded check
@@ -84,6 +94,20 @@ live-cycle: frontier compile-queue publish-queue medidas-alert
 clean-queue:
 	@rm -rf "$(OUT_COMPILER_DIR)"
 	@echo "[CLEAN] removed $(OUT_COMPILER_DIR)"
+
+inbox-dirs:
+	@mkdir -p "$(INBOX_DIR)" "$(PROCESSED_DIR)" "$(FAILED_DIR)" "$(ARCHIVE_DIR)"
+	@echo "[INBOX] ensured $(INBOX_DIR) $(PROCESSED_DIR) $(FAILED_DIR) $(ARCHIVE_DIR)"
+
+drain-inbox: inbox-dirs
+	@test -n "$(PDF_PROCESSOR_CMD)" || (echo "missing PDF_PROCESSOR_CMD"; exit 2)
+	@$(PY_ENV) scripts/inbox_drain.py \
+		--inbox "$(INBOX_DIR)" \
+		--processed "$(PROCESSED_DIR)" \
+		--failed "$(FAILED_DIR)" \
+		--archive "$(ARCHIVE_DIR)" \
+		--lock-file "$(INBOX_LOCK)" \
+		--processor-cmd "$(PDF_PROCESSOR_CMD)"
 
 
 # TODO
